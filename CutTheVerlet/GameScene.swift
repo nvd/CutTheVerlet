@@ -69,7 +69,7 @@ class GameScene: SKScene {
     
     //MARK: Touch handling
     
-    override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
 
         
     }
