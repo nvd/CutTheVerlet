@@ -13,7 +13,8 @@ import AVFoundation
 
 class GameScene: SKScene {
     
-    
+    private var crocodile: SKSpriteNode!
+    private var prize: SKSpriteNode!
 
     override func didMoveToView(view: SKView) {
         
@@ -64,13 +65,35 @@ class GameScene: SKScene {
     //MARK: Croc methods
     
     private func setUpCrocodile() {
-        
+        crocodile = SKSpriteNode(imageNamed: CrocMouthClosedImage)
+        crocodile.position = CGPointMake(size.width * 0.75, size.height * 0.312)
+        crocodile.zPosition = Layer.Crocodile
 
+        crocodile.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: CrocMaskImage), size: crocodile.size)
+        crocodile.physicsBody?.categoryBitMask = Category.Crocodile
+        crocodile.physicsBody?.collisionBitMask = 0
+        crocodile.physicsBody?.contactTestBitMask = Category.Prize
+        crocodile.physicsBody?.dynamic = false
+
+        addChild(crocodile)
+
+        animateCrocodile()
     }
     
     private func animateCrocodile() {
-        
+        let frames = [
+            SKTexture(imageNamed: CrocMouthClosedImage),
+            SKTexture(imageNamed: CrocMouthOpenImage),
+        ]
 
+        let duration = 2.0 + drand48() * 2.0
+
+        let move = SKAction.animateWithTextures(frames, timePerFrame:0.25)
+        let wait = SKAction.waitForDuration(duration)
+        let rest = SKAction.setTexture(frames[0])
+        let sequence = SKAction.sequence([wait, move, wait, rest])
+
+        crocodile.runAction(SKAction.repeatActionForever(sequence))
     }
     
     private func runNomNomAnimationWithDelay(delay: NSTimeInterval) {
