@@ -159,8 +159,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func didBeginContact(contact: SKPhysicsContact) {
+        if (contact.bodyA.node == crocodile && contact.bodyB.node == prize) ||
+            (contact.bodyA.node == prize && contact.bodyB.node == crocodile) {
 
-
+            // fade the pineapple away
+            let shrink = SKAction.scaleTo(0, duration: 0.08)
+            let removeNode = SKAction.removeFromParent()
+            let sequence = SKAction.sequence([shrink, removeNode])
+            prize.runAction(sequence)
+        }
     }
     
     private func checkIfRopeCutWithBody(body: SKPhysicsBody) {
