@@ -44,5 +44,5 @@ struct Category {
 
 //MARK: game configuration
 
-let PrizeIsDynamicsOnStart = true
+let PrizeIsDynamicsOnStart = false
 let CanCutMultipleRopesAtOnce = false

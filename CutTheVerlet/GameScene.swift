@@ -53,7 +53,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private func setUpPrize() {
         prize = SKSpriteNode(imageNamed: PrizeImage)
-        prize.position = CGPointMake(size.width * 0.5, size.height * 0.7)
+        prize.position = CGPointMake(178.95286560058594, 395.62783813476563)
         prize.zPosition = Layer.Prize
 
         prize.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: PrizeImage), size: prize.size)
