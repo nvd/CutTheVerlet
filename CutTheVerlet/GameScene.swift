@@ -34,8 +34,19 @@ class GameScene: SKScene {
     }
     
     private func setUpScenery() {
-        
+        let background = SKSpriteNode(imageNamed: BackgroundImage)
+        background.anchorPoint = CGPointMake(0, 1)
+        background.position = CGPointMake(0, size.height)
+        background.zPosition = Layer.Background
+        background.size = CGSize(width: self.view!.bounds.size.width, height: self.view!.bounds.size.height)
+        addChild(background)
 
+        let water = SKSpriteNode(imageNamed: WaterImage)
+        water.anchorPoint = CGPointMake(0, 0)
+        water.position = CGPointMake(0, size.height - background.size.height)
+        water.zPosition = Layer.Foreground
+        water.size = CGSize(width: self.view!.bounds.size.width, height: self.view!.bounds.size.height * 0.2139)
+        addChild(water)
     }
     
     private func setUpPrize() {
