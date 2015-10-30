@@ -126,12 +126,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func runNomNomAnimationWithDelay(delay: NSTimeInterval) {
+        crocodile.removeAllActions()
 
-        
+        let openMouth = SKAction.setTexture(SKTexture(imageNamed: CrocMouthOpenImage))
+        let wait = SKAction.waitForDuration(delay)
+        let closeMouth = SKAction.setTexture(SKTexture(imageNamed: CrocMouthClosedImage))
+        let sequence = SKAction.sequence([openMouth, wait, closeMouth])
+
+        crocodile.runAction(sequence)
+        animateCrocodile()
     }
     
     //MARK: Touch handling
-    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        runNomNomAnimationWithDelay(1)
+    }
+
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch in touches {
             let startPoint = touch.locationInNode(self)
@@ -167,6 +177,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let removeNode = SKAction.removeFromParent()
             let sequence = SKAction.sequence([shrink, removeNode])
             prize.runAction(sequence)
+
+            runNomNomAnimationWithDelay(0.15)
         }
     }
     
