@@ -85,7 +85,14 @@ class RopeNode: SKNode {
     }
     
     func attachToPrize(prize: SKSpriteNode) {
-        
-        
+        // align last segment of rope with prize
+        let lastNode = ropeSegments.last!
+        lastNode.position = CGPointMake(prize.position.x, prize.position.y + prize.size.height * 0.1)
+
+        // set up connecting joint
+        let joint = SKPhysicsJointPin.jointWithBodyA(lastNode.physicsBody!,
+            bodyB: prize.physicsBody!, anchor: lastNode.position)
+
+        prize.scene?.physicsWorld.addJoint(joint)
     }
 }
