@@ -68,8 +68,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //MARK: Rope methods
     
     private func setUpRopes() {
-        
+        // load rope data
+        let dataFile = NSBundle.mainBundle().pathForResource(RopeDataFile, ofType: nil)
+        let ropes = NSArray(contentsOfFile: dataFile!) as! [NSDictionary]
 
+        // add ropes
+        for i in 0..<ropes.count {
+
+            // create rope
+            let ropeData = ropes[i]
+            let length = Int(ropeData["length"] as! NSNumber) * Int(UIScreen.mainScreen().scale)
+            let relAnchorPoint = CGPointFromString(ropeData["relAnchorPoint"] as! String)
+            let anchorPoint = CGPoint(x: relAnchorPoint.x * self.view!.bounds.size.width,
+                y: relAnchorPoint.y * self.view!.bounds.size.height)
+            let rope = RopeNode(length: length, anchorPoint: anchorPoint, name: "\(i)")
+
+            // add to scene
+            rope.addToScene(self)
+
+            // connect the other end of the rope to the prize
+            rope.attachToPrize(prize)
+        }
     }
     
     //MARK: Croc methods
