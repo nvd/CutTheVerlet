@@ -11,7 +11,7 @@ import AVFoundation
 
 
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private var crocodile: SKSpriteNode!
     private var prize: SKSpriteNode!
@@ -30,8 +30,9 @@ class GameScene: SKScene {
     //MARK: Level setup
     
     private func setUpPhysics() {
-        
-
+        physicsWorld.contactDelegate = self
+        physicsWorld.gravity = CGVectorMake(0.0,-9.8)
+        physicsWorld.speed = 1.0
     }
     
     private func setUpScenery() {
