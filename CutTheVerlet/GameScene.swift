@@ -51,8 +51,17 @@ class GameScene: SKScene {
     }
     
     private func setUpPrize() {
-        
+        prize = SKSpriteNode(imageNamed: PrizeImage)
+        prize.position = CGPointMake(size.width * 0.5, size.height * 0.7)
+        prize.zPosition = Layer.Prize
 
+        prize.physicsBody = SKPhysicsBody(texture: SKTexture(imageNamed: PrizeImage), size: prize.size)
+        prize.physicsBody?.categoryBitMask = Category.Prize
+        prize.physicsBody?.collisionBitMask = 0
+        prize.physicsBody?.contactTestBitMask = Category.Rope
+        prize.physicsBody?.dynamic = PrizeIsDynamicsOnStart
+
+        addChild(prize)
     }
     
     //MARK: Rope methods
