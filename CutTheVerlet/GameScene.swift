@@ -133,8 +133,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //MARK: Touch handling
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        for touch in touches {
+            let startPoint = touch.locationInNode(self)
+            let endPoint = touch.previousLocationInNode(self)
 
-        
+            // check if rope cut
+            scene?.physicsWorld.enumerateBodiesAlongRayStart(startPoint, end: endPoint, usingBlock: { (body, point, normal, stop) -> Void in
+
+                self.checkIfRopeCutWithBody(body)
+            })
+
+            // produce some nice particles
+            let emitter = SKEmitterNode(fileNamed: "Particle.sks")
+            emitter!.position = startPoint
+            emitter!.zPosition = Layer.Rope
+            addChild(emitter!)
+        }
     }
     
     //MARK: Game logic
@@ -150,8 +164,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func checkIfRopeCutWithBody(body: SKPhysicsBody) {
-        
-        
+        let node = body.node!
+
+        // if it has a name it must be a rope node
+        if let name = node.name {
+
+            //enable prize dynamics
+            prize.physicsBody?.dynamic = true
+
+            // cut the rope
+            node.removeFromParent()
+
+            // fade out all nodes matching name
+            self.enumerateChildNodesWithName(name, usingBlock: { (node, stop) in
+
+                let fadeAway = SKAction.fadeOutWithDuration(0.25)
+                let removeNode = SKAction.removeFromParent()
+                let sequence = SKAction.sequence([fadeAway, removeNode])
+
+                node.runAction(sequence)
+            })
+        }
     }
     
     private func switchToNewGameWithTransition(transition: SKTransition) {
