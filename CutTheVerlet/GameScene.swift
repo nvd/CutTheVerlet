@@ -164,8 +164,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //MARK: Game logic
     
     override func update(currentTime: CFTimeInterval) {
-        
+        if prize.position.y <= 0 {
+            let transitions = [
+                SKTransition.doorsOpenHorizontalWithDuration(1.0),
+                SKTransition.doorsOpenVerticalWithDuration(1.0),
+                SKTransition.doorsCloseHorizontalWithDuration(1.0),
+                SKTransition.doorsCloseVerticalWithDuration(1.0),
+                SKTransition.flipHorizontalWithDuration(1.0),
+                SKTransition.flipVerticalWithDuration(1.0),
+                SKTransition.moveInWithDirection(.Left, duration:1.0),
+                SKTransition.pushWithDirection(.Right, duration:1.0),
+                SKTransition.revealWithDirection(.Down, duration:1.0),
+                SKTransition.crossFadeWithDuration(1.0),
+                SKTransition.fadeWithColor(UIColor.darkGrayColor(), duration:1.0),
+                SKTransition.fadeWithDuration(1.0),
+            ]
 
+            // transition to next level
+            let randomIndex = arc4random_uniform(UInt32(transitions.count))
+            switchToNewGameWithTransition(transitions[Int(randomIndex)])
+        }
     }
     
     func didBeginContact(contact: SKPhysicsContact) {
