@@ -179,6 +179,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             prize.runAction(sequence)
 
             runNomNomAnimationWithDelay(0.15)
+
+            // transition to next level
+            switchToNewGameWithTransition(SKTransition.doorwayWithDuration(1.0))
         }
     }
     
@@ -207,8 +210,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func switchToNewGameWithTransition(transition: SKTransition) {
-        
-        
+        let delay = SKAction.waitForDuration(1)
+        let transition = SKAction.runBlock({
+            let scene = GameScene(size: self.size)
+            self.view?.presentScene(scene, transition: transition)
+        })
+
+        runAction(SKAction.sequence([delay, transition]))
     }
     
     //MARK: Audio
