@@ -9,7 +9,7 @@
 import SpriteKit
 import AVFoundation
 
-
+private var backgroundMusicPlayer: AVAudioPlayer!
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
@@ -240,7 +240,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //MARK: Audio
     
     private func setUpAudio() {
-        
-        
+        if (backgroundMusicPlayer == nil) {
+            let backgroundMusicURL = NSBundle.mainBundle().URLForResource(BackgroundMusicSound, withExtension: nil)
+            backgroundMusicPlayer = try! AVAudioPlayer(contentsOfURL: backgroundMusicURL!)
+            backgroundMusicPlayer.numberOfLoops = -1
+        }
+        if (!backgroundMusicPlayer.playing) {
+            backgroundMusicPlayer.play()
+        }
     }
 }
