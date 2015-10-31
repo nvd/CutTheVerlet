@@ -19,6 +19,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var splashSoundAction: SKAction!
     private var nomNomSoundAction: SKAction!
     private var levelOver = false
+    private var ropeCut = false
 
     override func didMoveToView(view: SKView) {
         
@@ -145,6 +146,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         runNomNomAnimationWithDelay(1)
         runAction(sliceSoundAction)
+        ropeCut = false
     }
 
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -222,11 +224,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func checkIfRopeCutWithBody(body: SKPhysicsBody) {
+        if ropeCut && !CanCutMultipleRopesAtOnce {
+            return
+        }
+
         let node = body.node!
 
         // if it has a name it must be a rope node
         if let name = node.name {
-
             //enable prize dynamics
             prize.physicsBody?.dynamic = true
 
@@ -242,6 +247,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
                 node.runAction(sequence)
             })
+            ropeCut = true
         }
     }
     
