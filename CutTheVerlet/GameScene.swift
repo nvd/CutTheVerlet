@@ -15,6 +15,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private var crocodile: SKSpriteNode!
     private var prize: SKSpriteNode!
+    private var sliceSoundAction: SKAction!
+    private var splashSoundAction: SKAction!
+    private var nomNomSoundAction: SKAction!
 
     override func didMoveToView(view: SKView) {
         
@@ -140,6 +143,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //MARK: Touch handling
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         runNomNomAnimationWithDelay(1)
+        runAction(sliceSoundAction)
     }
 
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -165,6 +169,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func update(currentTime: CFTimeInterval) {
         if prize.position.y <= 0 {
+            runAction(splashSoundAction)
+
             let transitions = [
                 SKTransition.doorsOpenHorizontalWithDuration(1.0),
                 SKTransition.doorsOpenVerticalWithDuration(1.0),
@@ -197,6 +203,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             prize.runAction(sequence)
 
             runNomNomAnimationWithDelay(0.15)
+            runAction(nomNomSoundAction)
 
             // transition to next level
             switchToNewGameWithTransition(SKTransition.doorwayWithDuration(1.0))
@@ -248,5 +255,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if (!backgroundMusicPlayer.playing) {
             backgroundMusicPlayer.play()
         }
+        sliceSoundAction = SKAction.playSoundFileNamed(SliceSound, waitForCompletion: false)
+        splashSoundAction = SKAction.playSoundFileNamed(SplashSound, waitForCompletion: false)
+        nomNomSoundAction = SKAction.playSoundFileNamed(NomNomSound, waitForCompletion: false)
     }
 }
