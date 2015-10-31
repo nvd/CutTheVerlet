@@ -18,6 +18,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var sliceSoundAction: SKAction!
     private var splashSoundAction: SKAction!
     private var nomNomSoundAction: SKAction!
+    private var levelOver = false
 
     override func didMoveToView(view: SKView) {
         
@@ -168,6 +169,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //MARK: Game logic
     
     override func update(currentTime: CFTimeInterval) {
+        if levelOver {
+            return
+        }
+
         if prize.position.y <= 0 {
             runAction(splashSoundAction)
 
@@ -189,10 +194,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             // transition to next level
             let randomIndex = arc4random_uniform(UInt32(transitions.count))
             switchToNewGameWithTransition(transitions[Int(randomIndex)])
+            levelOver = true
         }
     }
     
     func didBeginContact(contact: SKPhysicsContact) {
+        if levelOver {
+            return
+        }
+
         if (contact.bodyA.node == crocodile && contact.bodyB.node == prize) ||
             (contact.bodyA.node == prize && contact.bodyB.node == crocodile) {
 
@@ -207,6 +217,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
             // transition to next level
             switchToNewGameWithTransition(SKTransition.doorwayWithDuration(1.0))
+            levelOver = true
         }
     }
     
